@@ -23,7 +23,7 @@ export default function Home() {
 
       <section className="mb-10">
         <p className="text-xs text-faint mb-2">Featured</p>
-        <a href={`/posts/${featured.slug}`}>
+        <a href={"/posts/" + featured.slug}>
           <h1 className="text-2xl font-medium leading-snug mb-2">
             {featured.title}
           </h1>
@@ -40,7 +40,7 @@ export default function Home() {
         {rest.map((post) => (
           
             key={post.slug}
-            href={`/posts/${post.slug}`}
+            href={"/posts/" + post.slug}
             className="border-t border-ink/10 py-5 first:pt-5 block hover:opacity-80"
           >
             <p className="text-xs text-faint mb-1">{post.category}</p>
