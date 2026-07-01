@@ -54,7 +54,7 @@ export default function Home() {
           </span>
         </a>
 
-        <nav className="flex flex-col gap-[10px] mt-10 text-sm">
+        <nav className="flex flex-col gap-3 mt-10 text-[15px]">
           <a href="/" className="text-ink font-medium">
             Latest
           </a>
@@ -72,48 +72,48 @@ export default function Home() {
           </a>
         </nav>
 
-        <p className="text-sm text-muted leading-relaxed mt-10 max-w-[190px]">
-          I write about building alone, and what nobody warns you about.
-        </p>
-
-        <p className="text-xs text-faint mt-8">hello@indiehacker.blog</p>
+        <p className="text-xs text-faint mt-10">hello@indiehacker.blog</p>
       </aside>
 
-      <main className="flex-1 px-10 py-11 max-w-2xl">
-        {yearGroups.map(({ year, posts: yearPosts }) => (
-          <section key={year} className="mb-2">
-            <p className="text-sm font-semibold text-ink mb-2">{year}</p>
-            <div className="border-t border-ink/10" />
-            {yearPosts.map((post) => (
-              <a
-                key={post.slug}
-                href={`/posts/${post.slug}`}
-                className="flex items-baseline justify-between gap-4 py-[13px] border-b border-ink/5 hover:opacity-70"
-              >
-                <span className="text-[15px] text-ink leading-snug">
-                  {post.title}
-                </span>
-                <span className="text-xs text-faint whitespace-nowrap">
-                  {formatDate(post.date)}
-                </span>
-              </a>
-            ))}
-          </section>
-        ))}
+      <main className="flex-1 flex justify-center px-10 py-11">
+        <div className="w-full max-w-2xl">
+          <h1 className="text-2xl font-bold text-ink text-center leading-snug mb-12">
+            I write about building alone, and what nobody warns you about.
+          </h1>
 
-        <section className="mt-10 bg-paper rounded-xl px-6 py-5">
-          <p className="text-[15px] font-medium mb-1">
-            One honest read a week
-          </p>
-          <p className="text-sm text-muted mb-4">
-            No growth hacks. Just what building alone actually looks like.
-          </p>
-          <input
-            type="email"
-            placeholder="name@email.com"
-            className="w-[220px] h-9 px-3 rounded-md border border-ink/15 bg-canvas text-sm"
-          />
-        </section>
+          {yearGroups.map(({ year, posts: yearPosts }) => (
+            <section key={year} className="mb-2">
+              <p className="text-base font-semibold text-ink mb-2">{year}</p>
+              <div className="border-t border-ink/10" />
+              {yearPosts.map((post) => (
+                <a
+                  key={post.slug}
+                  href={`/posts/${post.slug}`}
+                  className="flex items-baseline justify-between gap-4 py-4 border-b border-ink/5 hover:opacity-70"
+                >
+                  <span className="text-[17px] text-ink leading-snug">
+                    {post.title}
+                  </span>
+                  <span className="text-sm text-faint whitespace-nowrap">
+                    {formatDate(post.date)}
+                  </span>
+                </a>
+              ))}
+            </section>
+          ))}
+
+          <section className="mt-10 bg-paper rounded-xl px-6 py-5">
+            <p className="text-lg font-medium mb-1">One honest read a week</p>
+            <p className="text-base text-muted mb-4">
+              No growth hacks. Just what building alone actually looks like.
+            </p>
+            <input
+              type="email"
+              placeholder="name@email.com"
+              className="w-[220px] h-10 px-3 rounded-md border border-ink/15 bg-canvas text-base"
+            />
+          </section>
+        </div>
       </main>
     </div>
   );
