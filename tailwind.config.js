@@ -4,10 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: "#1c1c1e",
-        muted: "#666670",
-        faint: "#888780",
-        paper: "#f7f6f2",
+        ink: "#f2f1ec",
+        muted: "#a9a8a2",
+        faint: "#8b8a84",
+        paper: "#17181c",
+        surface: "#212226",
+        accent: "#c9d9b0",
       },
     },
   },
