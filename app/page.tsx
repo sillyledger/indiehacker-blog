@@ -59,7 +59,7 @@ export default async function Home() {
             Latest
           </a>
           {allCategories.map((category) => (
-            
+            <a
               key={category.name}
               href={`/category/${categorySlug(category.name)}`}
               className="text-muted"
@@ -90,7 +90,7 @@ export default async function Home() {
               <p className="text-base font-semibold text-ink mb-2">{year}</p>
               <div className="border-t border-ink/10" />
               {yearPosts.map((post) => (
-                
+                <a
                   key={post.slug}
                   href={`/posts/${post.slug}`}
                   className="flex items-baseline justify-between gap-4 py-4 border-b border-ink/5 hover:opacity-70"
