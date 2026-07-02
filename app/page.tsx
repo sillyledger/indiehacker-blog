@@ -1,30 +1,15 @@
-import { posts } from "./data";
+import { createClient } from "../lib/supabase";
 
-// Nav categories are derived from the posts themselves, so adding a new
-// category tag to a post automatically surfaces it in the nav — no more
-// nav/tag drift like "Decisions" and "Roadmaps" being untagged before.
+export const revalidate = 60;
+
 function categorySlug(category: string) {
   return category.toLowerCase().replace(/\s+/g, "-");
 }
 
-function getCategories(allPosts: typeof posts) {
-  const seen = new Set<string>();
-  const categories: string[] = [];
-  for (const post of allPosts) {
-    if (!seen.has(post.category)) {
-      seen.add(post.category);
-      categories.push(post.category);
-    }
-  }
-  return categories;
-}
-
-// Groups posts by year while preserving order, assuming posts are already
-// sorted newest-first in data.ts.
-function groupByYear(allPosts: typeof posts) {
+function groupByYear(posts: { published_at: string }[]) {
   const groups: { year: string; posts: typeof posts }[] = [];
-  for (const post of allPosts) {
-    const year = post.date.slice(0, 4);
+  for (const post of posts) {
+    const year = post.published_at.slice(0, 4);
     const current = groups[groups.length - 1];
     if (current && current.year === year) {
       current.posts.push(post);
@@ -36,13 +21,28 @@ function groupByYear(allPosts: typeof posts) {
 }
 
 function formatDate(iso: string) {
-  const [year, month, day] = iso.split("-");
+  const [year, month, day] = iso.slice(0, 10).split("-");
   return `${month}-${day}-${year}`;
 }
 
-export default function Home() {
-  const categories = getCategories(posts);
-  const yearGroups = groupByYear(posts);
+export default async function Home() {
+  const supabase = createClient();
+
+  const { data: posts } = await supabase
+    .from("posts")
+    .select("title, slug, category, published_at")
+    .eq("target_site", "indiehacker.blog")
+    .eq("status", "published")
+    .order("published_at", { ascending: false });
+
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("name")
+    .eq("site", "indiehacker.blog");
+
+  const allPosts = posts || [];
+  const allCategories = categories || [];
+  const yearGroups = groupByYear(allPosts);
 
   return (
     <div className="flex min-h-screen">
@@ -58,13 +58,13 @@ export default function Home() {
           <a href="/" className="text-ink font-medium">
             Latest
           </a>
-          {categories.map((category) => (
-            <a
-              key={category}
-              href={`/category/${categorySlug(category)}`}
+          {allCategories.map((category) => (
+            
+              key={category.name}
+              href={`/category/${categorySlug(category.name)}`}
               className="text-muted"
             >
-              {category}
+              {category.name}
             </a>
           ))}
           <a href="/about" className="text-muted mt-[6px]">
@@ -81,12 +81,16 @@ export default function Home() {
             I write about building alone, and what nobody warns you about.
           </h1>
 
+          {allPosts.length === 0 && (
+            <p className="text-muted text-center mb-10">No posts yet.</p>
+          )}
+
           {yearGroups.map(({ year, posts: yearPosts }) => (
             <section key={year} className="mb-2">
               <p className="text-base font-semibold text-ink mb-2">{year}</p>
               <div className="border-t border-ink/10" />
               {yearPosts.map((post) => (
-                <a
+                
                   key={post.slug}
                   href={`/posts/${post.slug}`}
                   className="flex items-baseline justify-between gap-4 py-4 border-b border-ink/5 hover:opacity-70"
@@ -95,7 +99,7 @@ export default function Home() {
                     {post.title}
                   </span>
                   <span className="text-sm text-faint whitespace-nowrap">
-                    {formatDate(post.date)}
+                    {formatDate(post.published_at)}
                   </span>
                 </a>
               ))}
