@@ -6,8 +6,15 @@ function categorySlug(category: string) {
   return category.toLowerCase().replace(/\s+/g, "-");
 }
 
-function groupByYear(posts: { published_at: string }[]) {
-  const groups: { year: string; posts: typeof posts }[] = [];
+type PostRow = {
+  title: string;
+  slug: string;
+  category: string | null;
+  published_at: string;
+};
+
+function groupByYear(posts: PostRow[]) {
+  const groups: { year: string; posts: PostRow[] }[] = [];
   for (const post of posts) {
     const year = post.published_at.slice(0, 4);
     const current = groups[groups.length - 1];
