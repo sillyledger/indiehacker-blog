@@ -66,7 +66,7 @@ export default async function Home() {
             Latest
           </a>
           {allCategories.map((category) => (
-            <a
+            
               key={category.name}
               href={`/category/${categorySlug(category.name)}`}
               className="text-muted"
@@ -79,7 +79,7 @@ export default async function Home() {
           </a>
         </nav>
 
-        <p className="text-xs text-faint mt-10">hello@indiehacker.blog</p>
+        <p className="text-xs text-faint mt-10">p@ryoka.xyz</p>
       </aside>
 
       <main className="flex-1 flex justify-center px-10 py-11">
@@ -97,7 +97,7 @@ export default async function Home() {
               <p className="text-base font-semibold text-ink mb-2">{year}</p>
               <div className="border-t border-ink/10" />
               {yearPosts.map((post) => (
-                <a
+                
                   key={post.slug}
                   href={`/posts/${post.slug}`}
                   className="flex items-baseline justify-between gap-4 py-4 border-b border-ink/5 hover:opacity-70"
@@ -112,18 +112,6 @@ export default async function Home() {
               ))}
             </section>
           ))}
-
-          <section className="mt-10 bg-paper rounded-xl px-6 py-5">
-            <p className="text-lg font-medium mb-1">One honest read a week</p>
-            <p className="text-base text-muted mb-4">
-              No growth hacks. Just what building alone actually looks like.
-            </p>
-            <input
-              type="email"
-              placeholder="name@email.com"
-              className="w-[220px] h-10 px-3 rounded-md border border-ink/15 bg-canvas text-base"
-            />
-          </section>
         </div>
       </main>
     </div>
