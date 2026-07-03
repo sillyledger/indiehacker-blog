@@ -40,8 +40,6 @@ export default async function CategoryPage({
 }) {
   const supabase = createClient();
 
-  // Pull every published post's title/date/category in one query,
-  // then derive the category list from the posts themselves.
   const { data: allRows } = await supabase
     .from("posts")
     .select("title, slug, category, published_at")
@@ -94,7 +92,7 @@ export default async function CategoryPage({
           </a>
         </nav>
 
-        <p className="text-xs text-faint mt-10">hello@indiehacker.blog</p>
+        <p className="text-xs text-faint mt-10">p@ryoka.xyz</p>
       </aside>
 
       <main className="flex-1 flex justify-center px-10 py-11">
