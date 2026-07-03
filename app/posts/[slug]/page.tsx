@@ -73,7 +73,7 @@ export default async function PostPage({
             Latest
           </a>
           {allCategories.map((category) => (
-            <a
+            
               key={category.name}
               href={`/category/${categorySlug(category.name)}`}
               className={
@@ -90,7 +90,7 @@ export default async function PostPage({
           </a>
         </nav>
 
-        <p className="text-xs text-faint mt-10">hello@indiehacker.blog</p>
+        <p className="text-xs text-faint mt-10">p@ryoka.xyz</p>
       </aside>
 
       <main className="flex-1 flex justify-center px-10 py-11">
@@ -98,7 +98,7 @@ export default async function PostPage({
           <div className="flex items-center gap-3 text-sm text-faint mb-6">
             {post.category && (
               <>
-                <a
+                
                   href={`/category/${categorySlug(post.category)}`}
                   className="text-muted hover:opacity-70"
                 >
@@ -135,7 +135,7 @@ export default async function PostPage({
                 about what that actually looks like.
               </p>
               <div className="flex items-center gap-4 text-sm">
-                <a
+                
                   href="https://x.com/PieterBorremans"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -143,7 +143,7 @@ export default async function PostPage({
                 >
                   X
                 </a>
-                <a
+                
                   href="https://pieterborremans.com"
                   target="_blank"
                   rel="noopener noreferrer"
