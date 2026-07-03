@@ -40,28 +40,31 @@ export default async function CategoryPage({
 }) {
   const supabase = createClient();
 
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("name")
-    .eq("site", "indiehacker.blog");
-
-  const allCategories = categories || [];
-  const match = allCategories.find(
-    (c) => categorySlug(c.name) === params.slug
-  );
-
-  if (!match) notFound();
-
-  const { data: posts } = await supabase
+  // Pull every published post's title/date/category in one query,
+  // then derive the category list from the posts themselves.
+  const { data: allRows } = await supabase
     .from("posts")
     .select("title, slug, category, published_at")
     .eq("target_site", "indiehacker.blog")
     .eq("status", "published")
-    .eq("category", match.name)
     .order("published_at", { ascending: false });
 
-  const allPosts = posts || [];
-  const yearGroups = groupByYear(allPosts);
+  const rows = allRows || [];
+
+  const categoryNames = Array.from(
+    new Set(
+      rows
+        .map((r) => r.category)
+        .filter((c): c is string => !!c && c.trim().length > 0)
+    )
+  ).sort((a, b) => a.localeCompare(b));
+
+  const match = categoryNames.find((name) => categorySlug(name) === params.slug);
+
+  if (!match) notFound();
+
+  const categoryPosts = rows.filter((r) => r.category === match);
+  const yearGroups = groupByYear(categoryPosts);
 
   return (
     <div className="flex min-h-screen">
@@ -77,17 +80,13 @@ export default async function CategoryPage({
           <a href="/" className="text-muted">
             Latest
           </a>
-          {allCategories.map((category) => (
+          {categoryNames.map((name) => (
             <a
-              key={category.name}
-              href={`/category/${categorySlug(category.name)}`}
-              className={
-                category.name === match.name
-                  ? "text-ink font-medium"
-                  : "text-muted"
-              }
+              key={name}
+              href={`/category/${categorySlug(name)}`}
+              className={name === match ? "text-ink font-medium" : "text-muted"}
             >
-              {category.name}
+              {name}
             </a>
           ))}
           <a href="/about" className="text-muted mt-[6px]">
@@ -101,10 +100,10 @@ export default async function CategoryPage({
       <main className="flex-1 flex justify-center px-10 py-11">
         <div className="w-full max-w-2xl">
           <h1 className="text-2xl font-bold text-ink text-center leading-snug mb-12">
-            {match.name}
+            {match}
           </h1>
 
-          {allPosts.length === 0 && (
+          {categoryPosts.length === 0 && (
             <p className="text-muted text-center mb-10">
               No posts in this category yet.
             </p>
