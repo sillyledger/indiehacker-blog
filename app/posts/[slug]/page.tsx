@@ -134,20 +134,36 @@ export default async function PostPage({
               </p>
               <div className="flex items-center gap-4 text-sm">
                 <a
-                  href="https://x.com/PieterBorremans"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-ink"
-                >
-                  X
-                </a>
-                <a
                   href="https://pieterborremans.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted hover:text-ink"
                 >
-                  Website
+                  Personal Blog
+                </a>
+                <a
+                  href="https://www.pinterest.com/borremanspieter/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted hover:text-ink"
+                >
+                  Pinterest
+                </a>
+                <a
+                  href="https://open.spotify.com/show/765k4LuyZrS2sYEkXHOZ47?si=008f51f82ca341d9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted hover:text-ink"
+                >
+                  Spotify
+                </a>
+                <a
+                  href="https://www.youtube.com/@PieterBorremans"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted hover:text-ink"
+                >
+                  YouTube
                 </a>
               </div>
             </div>
