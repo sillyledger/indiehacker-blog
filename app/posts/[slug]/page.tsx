@@ -122,9 +122,11 @@ export default async function PostPage({
           />
 
           <div className="mt-16 pt-8 border-t border-ink/10 flex gap-5">
-            <div className="w-14 h-14 shrink-0 rounded-full bg-paper border border-ink/10 flex items-center justify-center text-sm text-faint font-medium">
-              PB
-            </div>
+            <img
+              src="/Pieter-Borremans-founder.jpeg"
+              alt="Pieter Borremans"
+              className="w-14 h-14 shrink-0 rounded-full object-cover border border-ink/10"
+            />
             <div>
               <p className="text-base font-semibold text-ink mb-1">
                 Written by Pieter Borremans
