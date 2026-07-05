@@ -128,9 +128,9 @@ export default async function AboutPage() {
                 >
                   TWO Docs
                 </a>{" "}
-                (minimal docs editor), Aegos Intel (financial tools for
-                investors), Study Brew (language learning platform), and Tenkaro
-                (domain monitoring).
+                (minimal docs editor), Aegos Intel (intelligent company data for
+                investors), Study Brew (language learning platform), and Kiroka
+                (free subscription tracker).
               </p>
 
               <p className="mb-5">
@@ -138,11 +138,11 @@ export default async function AboutPage() {
                 alone — the burnout, the loneliness, the decision fatigue, and
                 the small wins that keep you going. This blog exists because most
                 indie hacker content focuses on tactics and revenue. Almost
-                nobody talks about what it actually feels like.
+                nobody talks about what it really feels like.
               </p>
 
               <p className="mb-5">
-                Pieter Borremans builds everything from an iPad using Next.js,
+                Pieter Borremans builds everything from an iPad, MacBook and mostly using Next.js,
                 Supabase, and Vercel. English is not my first language, and I
                 treat that as a feature, not a limitation.
               </p>
