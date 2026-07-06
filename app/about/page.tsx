@@ -142,7 +142,7 @@ export default async function AboutPage() {
                   capital
                 </a>{" "}
                 company that builds, acquires, and invests in exceptional assets.
-                Durable ownership, patient capital, and long-term value creation.
+                I aim for durable ownership, patient capital, and long-term value creation.
               </p>
 
               <p>
