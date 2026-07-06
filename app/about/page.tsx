@@ -4,11 +4,11 @@ import { createClient } from "../../lib/supabase";
 export const metadata: Metadata = {
   title: "About Pieter Borremans | IndieHacker Blog",
   description:
-    "Pieter Borremans is a writer, content creator, and solo founder building micro-SaaS products under Ryoka Group. Based between Taiwan and London.",
+    "Pieter Borremans is a writer, digital entrepreneur, and content creator. Born in Indonesia, raised in Brussels, building between Taiwan and London.",
   openGraph: {
     title: "About Pieter Borremans | IndieHacker Blog",
     description:
-      "Pieter Borremans is a writer, content creator, and solo founder building micro-SaaS products under Ryoka Group. Based between Taiwan and London.",
+      "Pieter Borremans is a writer, digital entrepreneur, and content creator. Born in Indonesia, raised in Brussels, building between Taiwan and London.",
     images: ["/Pieter-Borremans-founder.jpeg"],
   },
 };
@@ -33,7 +33,7 @@ export default async function AboutPage() {
     name: "Pieter Borremans",
     url: "https://www.indiehacker.blog/about",
     image: "https://www.indiehacker.blog/Pieter-Borremans-founder.jpeg",
-    jobTitle: "Founder",
+    jobTitle: "Digital Entrepreneur & Founder",
     worksFor: {
       "@type": "Organization",
       name: "Ryoka Group",
@@ -43,6 +43,7 @@ export default async function AboutPage() {
       "https://pieterborremans.com",
       "https://linkedin.com/in/pieter-borremans",
       "https://www.youtube.com/@PieterBorremans",
+      "https://www.pinterest.com/borremanspieter",
     ],
   };
 
@@ -88,7 +89,7 @@ export default async function AboutPage() {
             <div className="flex justify-center mb-8">
               <img
                 src="/Pieter-Borremans-founder.jpeg"
-                alt="Pieter Borremans — founder of Ryoka Group"
+                alt="Pieter Borremans, digital entrepreneur and founder of Ryoka Group"
                 className="w-[120px] h-[120px] rounded-full object-cover border border-ink/10"
               />
             </div>
@@ -99,9 +100,30 @@ export default async function AboutPage() {
 
             <div className="text-[17px] leading-[1.75] text-[#1a1a1a]">
               <p className="mb-5">
-                I&rsquo;m Pieter Borremans — a writer, content creator, and
-                founder based in Taiwan and London. I build independent software
-                products under{" "}
+                I&rsquo;m Pieter Borremans. Writer, digital entrepreneur, and
+                content creator based between Taiwan and London. Born in
+                Indonesia, raised in Brussels, and educated at KDG University
+                College in Antwerp. I&rsquo;ve spent 25 years living and working
+                across countries. That restlessness shaped everything I do now.
+              </p>
+
+              <p className="mb-5">
+                I started my first business at the age of 22 and never looked
+                back. Sold it almost 15 years later, right before AI,
+                vibecoding, and no-code tools made it possible for anyone without
+                a dev background (like me) to build software from scratch.
+              </p>
+
+              <p className="mb-5">
+                I write about the psychological and emotional side of building
+                alone. The burnout, the loneliness, the decision fatigue, and the
+                small wins that keep you going. This blog exists because most
+                indie hacker content focuses on tactics and revenue. Almost
+                nobody talks about what it actually feels like.
+              </p>
+
+              <p className="mb-5">
+                Pieter Borremans launched{" "}
                 <a
                   href="https://ryoka.xyz"
                   target="_blank"
@@ -110,41 +132,23 @@ export default async function AboutPage() {
                 >
                   Ryoka Group
                 </a>
-                , including{" "}
+                , an umbrella and permanent{" "}
                 <a
-                  href="https://sorano.space"
+                  href="https://www.ryoka.xyz/capital"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline text-ink"
                 >
-                  Sorano
+                  capital
                 </a>{" "}
-                (public roadmaps for indie founders),{" "}
-                <a
-                  href="https://two.so"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline text-ink"
-                >
-                  TWO Docs
-                </a>{" "}
-                (minimal docs editor), Aegos Intel (intelligent company data for
-                investors), Study Brew (language learning platform), and Kiroka
-                (free subscription tracker).
+                company that builds, acquires, and invests in exceptional assets.
+                Durable ownership, patient capital, and long-term value creation.
               </p>
 
-              <p className="mb-5">
-                I write about the psychological and emotional side of building
-                alone — the burnout, the loneliness, the decision fatigue, and
-                the small wins that keep you going. This blog exists because most
-                indie hacker content focuses on tactics and revenue. Almost
-                nobody talks about what it really feels like.
-              </p>
-
-              <p className="mb-5">
-                Pieter Borremans builds everything from an iPad, MacBook and mostly using Next.js,
-                Supabase, and Vercel. English is not my first language, and I
-                treat that as a feature, not a limitation.
+              <p>
+                If you&rsquo;re someone building something alone, figuring
+                things out in public, or just appreciate honesty over polish,
+                then you&rsquo;re in the right place.
               </p>
             </div>
 
@@ -175,20 +179,12 @@ export default async function AboutPage() {
                   YouTube
                 </a>
                 <a
-                  href="https://sorano.space"
+                  href="https://www.pinterest.com/borremanspieter"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted hover:text-ink"
                 >
-                  sorano.space
-                </a>
-                <a
-                  href="https://two.so"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-ink"
-                >
-                  two.so
+                  Pinterest
                 </a>
                 <a
                   href="https://ryoka.xyz"
