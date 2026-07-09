@@ -4,11 +4,11 @@ import { createClient } from "../../lib/supabase";
 export const metadata: Metadata = {
   title: "About Pieter Borremans | IndieHacker Blog",
   description:
-    "Pieter Borremans is a writer, digital entrepreneur, and content creator. Born in Indonesia, raised in Brussels, building between Taiwan and London.",
+    "Pieter Borremans is a writer, digital entrepreneur, and founder of Ryoka Group. Born in Indonesia, raised in Belgium, based between Taipei and London.",
   openGraph: {
     title: "About Pieter Borremans | IndieHacker Blog",
     description:
-      "Pieter Borremans is a writer, digital entrepreneur, and content creator. Born in Indonesia, raised in Brussels, building between Taiwan and London.",
+      "Pieter Borremans is a writer, digital entrepreneur, and founder of Ryoka Group. Born in Indonesia, raised in Belgium, based between Taipei and London.",
     images: ["/Pieter-Borremans-founder.jpeg"],
   },
 };
@@ -27,22 +27,55 @@ export default async function AboutPage() {
 
   const allCategories = categories || [];
 
+  // Same @id as the Person schema on ryokagroup.com/founder — this tells
+  // Google it's the same entity, not a separate one, across both domains.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": "https://ryokagroup.com/founder#pieter",
     name: "Pieter Borremans",
+    givenName: "Pieter",
+    familyName: "Borremans",
     url: "https://www.indiehacker.blog/about",
     image: "https://www.indiehacker.blog/Pieter-Borremans-founder.jpeg",
-    jobTitle: "Digital Entrepreneur & Founder",
+    jobTitle: "Founder",
+    description:
+      "Pieter Borremans is the founder of Ryoka Group. A writer, digital entrepreneur, and software founder who builds, operates, and invests in software products.",
+    birthPlace: {
+      "@type": "Place",
+      name: "Indonesia",
+    },
+    nationality: {
+      "@type": "Country",
+      name: "Belgium",
+    },
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "KdG University College",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Antwerp",
+        addressCountry: "BE",
+      },
+    },
+    homeLocation: [
+      { "@type": "Place", name: "Taipei, Taiwan" },
+      { "@type": "Place", name: "London, United Kingdom" },
+    ],
     worksFor: {
       "@type": "Organization",
+      "@id": "https://ryokagroup.com/#organization",
       name: "Ryoka Group",
-      url: "https://ryoka.xyz",
+      url: "https://ryokagroup.com",
     },
     sameAs: [
       "https://pieterborremans.com",
-      "https://linkedin.com/in/pieter-borremans",
+      "https://ryokagroup.com/founder",
+      "https://ryoka.xyz",
+      "https://www.linkedin.com/in/pieter-borremans/",
+      "https://medium.com/@borremanspieter",
       "https://www.youtube.com/@PieterBorremans",
+      "https://github.com/sillyledger",
       "https://www.pinterest.com/borremanspieter",
     ],
   };
@@ -101,8 +134,8 @@ export default async function AboutPage() {
             <div className="text-[17px] leading-[1.75] text-[#1a1a1a]">
               <p className="mb-5">
                 I&rsquo;m Pieter Borremans. Writer, digital entrepreneur, and
-                content creator based between Taiwan and London. Born in
-                Indonesia, raised in Brussels, and educated at KDG University
+                content creator based between Taipei and London. Born in
+                Indonesia, raised in Belgium, and educated at KDG University
                 College in Antwerp. I&rsquo;ve spent 25 years living and working
                 across countries. That restlessness shaped everything I do now.
               </p>
@@ -123,26 +156,18 @@ export default async function AboutPage() {
               </p>
 
               <p className="mb-5">
-                Pieter Borremans launched{" "}
+                Pieter Borremans is the founder of{" "}
                 <a
-                  href="https://ryoka.xyz"
+                  href="https://ryokagroup.com/founder"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="underline text-ink"
                 >
                   Ryoka Group
                 </a>
-                , an umbrella and permanent{" "}
-                <a
-                  href="https://www.ryoka.xyz/capital"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline text-ink"
-                >
-                  capital
-                </a>{" "}
-                company that builds, acquires, and invests in exceptional assets.
-                I aim for durable ownership, patient capital, and long-term value creation.
+                , which builds, operates, and invests in software products.
+                Some are held for the long run, others run as experiments to
+                test what is worth building next.
               </p>
 
               <p>
@@ -155,6 +180,14 @@ export default async function AboutPage() {
             <div className="mt-10 pt-6 border-t border-ink/10">
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                 <a
+                  href="https://ryokagroup.com/founder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted hover:text-ink"
+                >
+                  ryokagroup.com
+                </a>
+                <a
                   href="https://pieterborremans.com"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -163,12 +196,28 @@ export default async function AboutPage() {
                   pieterborremans.com
                 </a>
                 <a
-                  href="https://linkedin.com/in/pieter-borremans"
+                  href="https://ryoka.xyz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted hover:text-ink"
+                >
+                  ryoka.xyz
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/pieter-borremans/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted hover:text-ink"
                 >
                   LinkedIn
+                </a>
+                <a
+                  href="https://medium.com/@borremanspieter"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted hover:text-ink"
+                >
+                  Medium
                 </a>
                 <a
                   href="https://www.youtube.com/@PieterBorremans"
@@ -179,20 +228,20 @@ export default async function AboutPage() {
                   YouTube
                 </a>
                 <a
+                  href="https://github.com/sillyledger"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted hover:text-ink"
+                >
+                  GitHub
+                </a>
+                <a
                   href="https://www.pinterest.com/borremanspieter"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted hover:text-ink"
                 >
                   Pinterest
-                </a>
-                <a
-                  href="https://ryoka.xyz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-ink"
-                >
-                  ryoka.xyz
                 </a>
               </div>
             </div>
