@@ -109,7 +109,10 @@ export default async function AboutPage() {
                 {category.name}
               </a>
             ))}
-            <a href="/about" className="text-ink font-medium mt-[6px]">
+            <a href="/projects" className="text-muted mt-[6px]">
+              Projects
+            </a>
+            <a href="/about" className="text-ink font-medium">
               About
             </a>
           </nav>
