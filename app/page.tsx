@@ -74,7 +74,10 @@ export default async function Home() {
               {category.name}
             </a>
           ))}
-          <a href="/about" className="text-muted mt-[6px]">
+          <a href="/projects" className="text-muted mt-[6px]">
+            Projects
+          </a>
+          <a href="/about" className="text-muted">
             About
           </a>
         </nav>
