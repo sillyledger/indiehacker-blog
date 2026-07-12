@@ -135,8 +135,7 @@ export default async function PostPage({
                 Written by Pieter Borremans
               </p>
               <p className="text-[15px] text-muted leading-relaxed mb-3">
-                I am a writer, content creator, and founder based in Taiwan and London, UK. I write about entrepreneurship, independent business-building, and the unfiltered reality of creating things online, documenting the journey publicly on his personal blog, where he holds nothing back
-              </p>
+Pieter Borremans is a writer, content creator, and founder based in Taichung, Taiwan and London, UK. He writes about entrepreneurship, independent business-building, and the unfiltered reality of creating things online, documenting the journey publicly on his personal blog, where he holds nothing back.              </p>
               <div className="flex items-center gap-4 text-sm">
                 <a
                   href="https://pieterborremans.com"
