@@ -69,15 +69,16 @@ export default async function AboutPage() {
       url: "https://ryokagroup.com",
     },
     sameAs: [
-      "https://pieterborremans.com",
-      "https://ryokagroup.com/founder",
-      "https://ryoka.xyz",
-      "https://www.linkedin.com/in/pieter-borremans/",
-      "https://medium.com/@borremanspieter",
-      "https://www.youtube.com/@PieterBorremans",
-      "https://github.com/sillyledger",
-      "https://www.pinterest.com/borremanspieter",
-    ],
+  "https://pieterborremans.com",
+  "https://ryokagroup.com/founder",
+  "https://echoroom.xyz/about",
+  "https://ryoka.xyz",
+  "https://www.linkedin.com/in/pieter-borremans/",
+  "https://medium.com/@borremanspieter",
+  "https://www.youtube.com/@PieterBorremans",
+  "https://github.com/sillyledger",
+  "https://www.pinterest.com/borremanspieter",
+],
   };
 
   return (
