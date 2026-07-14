@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 body {
-  background-color: #ffffff;
-  color: #1c1c1e;
+  @apply bg-canvas text-ink;
   font-size: 18px;
 }
 
