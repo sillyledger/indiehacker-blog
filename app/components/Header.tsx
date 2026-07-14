@@ -45,7 +45,7 @@ export default async function Header({ activeHref = "/" }: HeaderProps) {
           <span className="font-mono font-normal text-base">.blog</span>
         </a>
 
-        <nav className="hidden md:flex items-center gap-5 font-mono text-[12px] text-faint overflow-x-auto whitespace-nowrap">
+        <nav className="hidden md:flex items-center gap-5 font-mono text-[13px] text-faint overflow-x-auto whitespace-nowrap">
           {navItems.map((item) => (
             <a
               key={item.href}
