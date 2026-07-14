@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export const revalidate = 60;
 
@@ -31,6 +33,22 @@ function groupByYear(posts: PostRow[]) {
 function formatDate(iso: string) {
   const [year, month, day] = iso.slice(0, 10).split("-");
   return `${month}-${day}-${year}`;
+}
+
+// Same map as app/page.tsx and app/posts/[slug]/page.tsx. Third copy —
+// this is the point where it's genuinely worth pulling into
+// lib/categoryMeta.ts so a color/tagline change only has to happen once.
+const categoryMeta: Record<string, { dot: string }> = {
+  thoughts: { dot: "bg-cat-thoughts" },
+  money: { dot: "bg-cat-money" },
+  marketing: { dot: "bg-cat-marketing" },
+  building: { dot: "bg-cat-building" },
+  productivity: { dot: "bg-cat-productivity" },
+  "my launches": { dot: "bg-cat-my-launches" },
+};
+
+function getCategoryDot(name: string) {
+  return (categoryMeta[name.toLowerCase()] || { dot: "bg-accent" }).dot;
 }
 
 export default async function CategoryPage({
@@ -65,73 +83,52 @@ export default async function CategoryPage({
   const yearGroups = groupByYear(categoryPosts);
 
   return (
-    <div className="flex min-h-screen">
-      <aside className="w-[260px] shrink-0 bg-paper border-r border-ink/10 px-8 py-11">
-        <a href="/" className="inline-block">
-          <span className="text-lg font-medium relative">
-            indiehacker
-            <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-ink" />
-          </span>
-        </a>
+    <>
+      <Header activeHref={`/category/${params.slug}`} />
 
-        <nav className="flex flex-col gap-3 mt-10 text-[15px]">
-          <a href="/" className="text-muted">
-            Latest
-          </a>
-          {categoryNames.map((name) => (
-            <a
-              key={name}
-              href={`/category/${categorySlug(name)}`}
-              className={name === match ? "text-ink font-medium" : "text-muted"}
-            >
-              {name}
-            </a>
-          ))}
-          <a href="/projects" className="text-muted mt-[6px]">
-            Projects
-          </a>
-          <a href="/about" className="text-muted">
-            About
-          </a>
-        </nav>
-
-        <p className="text-xs text-faint mt-10">p@ryoka.xyz</p>
-      </aside>
-
-      <main className="flex-1 flex justify-center px-10 py-11">
-        <div className="w-full max-w-2xl">
-          <h1 className="text-2xl font-bold text-ink text-center leading-snug mb-12">
+      <main className="max-w-[1180px] mx-auto px-6 md:px-10 pt-14 pb-24">
+        <div className="flex items-center justify-center gap-3 mb-12">
+          <span className={`w-2.5 h-2.5 rounded-full ${getCategoryDot(match)}`} />
+          <h1
+            className="text-center"
+            style={{ fontWeight: 800, letterSpacing: "-0.02em", fontSize: "28px" }}
+          >
             {match}
           </h1>
-
-          {categoryPosts.length === 0 && (
-            <p className="text-muted text-center mb-10">
-              No posts in this category yet.
-            </p>
-          )}
-
-          {yearGroups.map(({ year, posts: yearPosts }) => (
-            <section key={year} className="mb-2">
-              <p className="text-base font-semibold text-ink mb-2">{year}</p>
-              <div className="border-t border-ink/10" />
-              {yearPosts.map((post) => (
-                <a
-                  key={post.slug}
-                  href={`/posts/${post.slug}`}
-                  className="flex items-baseline justify-between gap-4 py-4 border-b border-ink/5 hover:opacity-70"
-                >
-                  <span className="text-[17px] text-ink leading-snug">
-                    {post.title}
-                  </span>
-                  <span className="text-sm text-faint whitespace-nowrap">
-                    {formatDate(post.published_at)}
-                  </span>
-                </a>
-              ))}
-            </section>
-          ))}
         </div>
+
+        {categoryPosts.length === 0 && (
+          <p className="text-faint text-center mb-10">
+            No posts in this category yet.
+          </p>
+        )}
+
+        {yearGroups.map(({ year, posts: yearPosts }) => (
+          <section key={year} className="mb-2">
+            <p className="text-base font-semibold mb-2">{year}</p>
+            <div className="border-t border-line" />
+            {yearPosts.map((post) => (
+              <a
+                key={post.slug}
+                href={`/posts/${post.slug}`}
+                className="block py-8 group border-b border-line"
+              >
+                <span className="font-mono text-[13px] text-faint">
+                  {formatDate(post.published_at)}
+                </span>
+                <h3
+                  className="mt-2 group-hover:text-accent transition-colors"
+                  style={{ fontWeight: 700, fontSize: "22px", lineHeight: 1.25 }}
+                >
+                  {post.title}
+                </h3>
+              </a>
+            ))}
+          </section>
+        ))}
       </main>
-    </div>
+
+      <Footer />
+    </>
   );
 }
