@@ -64,15 +64,18 @@ const categoryMeta: Record<
     hoverBorder: "hover:border-cat-building",
     tagline: "What's actually shipping.",
   },
-  opinion: {
-    dot: "bg-cat-opinion",
-    hoverBorder: "hover:border-cat-opinion",
-    tagline: "Hot takes from the trenches.",
+  productivity: {
+    dot: "bg-cat-productivity",
+    hoverBorder: "hover:border-cat-productivity",
+    tagline: "Systems for actually getting things done.",
   },
-  seo: {
-    dot: "bg-cat-seo",
-    hoverBorder: "hover:border-cat-seo",
-    tagline: "Search as a free growth channel.",
+  // Key must match the exact category name (lowercased) you type into
+  // RyokaOS — if you name it anything other than "My Launches" this
+  // won't match and it'll fall back to the generic accent-blue style.
+  "my launches": {
+    dot: "bg-cat-my-launches",
+    hoverBorder: "hover:border-cat-my-launches",
+    tagline: "New things I've built, out in the open.",
   },
 };
 
