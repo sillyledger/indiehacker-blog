@@ -1,4 +1,5 @@
 import { createClient } from "../lib/supabase";
+import { getCategoryMeta } from "../lib/categoryMeta";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -32,61 +33,6 @@ function groupByYear(posts: PostRow[]) {
     }
   }
   return groups;
-}
-
-// Category -> color + tagline, keyed by lowercase category name.
-// These reference literal Tailwind classes (defined in tailwind.config.js)
-// rather than being built with string interpolation like `text-cat-${slug}` —
-// Tailwind's build-time scanner only picks up class names it can see
-// literally in the source, so a dynamically-constructed class name would
-// silently produce no CSS in production.
-const categoryMeta: Record<
-  string,
-  { dot: string; hoverBorder: string; tagline: string }
-> = {
-  thoughts: {
-    dot: "bg-cat-thoughts",
-    hoverBorder: "hover:border-cat-thoughts",
-    tagline: "Reflections on building alone.",
-  },
-  money: {
-    dot: "bg-cat-money",
-    hoverBorder: "hover:border-cat-money",
-    tagline: "The financial reality nobody posts.",
-  },
-  marketing: {
-    dot: "bg-cat-marketing",
-    hoverBorder: "hover:border-cat-marketing",
-    tagline: "Getting found without a budget.",
-  },
-  building: {
-    dot: "bg-cat-building",
-    hoverBorder: "hover:border-cat-building",
-    tagline: "What's actually shipping.",
-  },
-  productivity: {
-    dot: "bg-cat-productivity",
-    hoverBorder: "hover:border-cat-productivity",
-    tagline: "Systems for actually getting things done.",
-  },
-  // Key must match the exact category name (lowercased) you type into
-  // RyokaOS — if you name it anything other than "My Launches" this
-  // won't match and it'll fall back to the generic accent-blue style.
-  "my launches": {
-    dot: "bg-cat-my-launches",
-    hoverBorder: "hover:border-cat-my-launches",
-    tagline: "New things I've built, out in the open.",
-  },
-};
-
-function getCategoryMeta(name: string) {
-  return (
-    categoryMeta[name.toLowerCase()] || {
-      dot: "bg-accent",
-      hoverBorder: "hover:border-accent",
-      tagline: `Posts about ${name}.`,
-    }
-  );
 }
 
 export default async function Home() {
