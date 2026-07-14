@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase";
+import { getCategoryMeta } from "../../../lib/categoryMeta";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
@@ -33,22 +34,6 @@ function groupByYear(posts: PostRow[]) {
 function formatDate(iso: string) {
   const [year, month, day] = iso.slice(0, 10).split("-");
   return `${month}-${day}-${year}`;
-}
-
-// Same map as app/page.tsx and app/posts/[slug]/page.tsx. Third copy —
-// this is the point where it's genuinely worth pulling into
-// lib/categoryMeta.ts so a color/tagline change only has to happen once.
-const categoryMeta: Record<string, { dot: string }> = {
-  thoughts: { dot: "bg-cat-thoughts" },
-  money: { dot: "bg-cat-money" },
-  marketing: { dot: "bg-cat-marketing" },
-  building: { dot: "bg-cat-building" },
-  productivity: { dot: "bg-cat-productivity" },
-  "my launches": { dot: "bg-cat-my-launches" },
-};
-
-function getCategoryDot(name: string) {
-  return (categoryMeta[name.toLowerCase()] || { dot: "bg-accent" }).dot;
 }
 
 export default async function CategoryPage({
@@ -88,7 +73,9 @@ export default async function CategoryPage({
 
       <main className="max-w-[1180px] mx-auto px-6 md:px-10 pt-14 pb-24">
         <div className="flex items-center justify-center gap-3 mb-12">
-          <span className={`w-2.5 h-2.5 rounded-full ${getCategoryDot(match)}`} />
+          <span
+            className={`w-2.5 h-2.5 rounded-full ${getCategoryMeta(match).dot}`}
+          />
           <h1
             className="text-center"
             style={{ fontWeight: 800, letterSpacing: "-0.02em", fontSize: "28px" }}
