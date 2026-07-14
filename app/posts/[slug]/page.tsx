@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase";
+import { getCategoryMeta } from "../../../lib/categoryMeta";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
@@ -18,22 +19,6 @@ function readTime(html: string) {
   const text = html.replace(/<[^>]+>/g, " ");
   const words = text.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
-}
-
-// Same map as app/page.tsx. Duplicated for now rather than shared —
-// worth extracting to lib/categoryMeta.ts once category/[slug]/page.tsx
-// needs it too, so there's one place to update instead of three.
-const categoryMeta: Record<string, { dot: string }> = {
-  thoughts: { dot: "bg-cat-thoughts" },
-  money: { dot: "bg-cat-money" },
-  marketing: { dot: "bg-cat-marketing" },
-  building: { dot: "bg-cat-building" },
-  productivity: { dot: "bg-cat-productivity" },
-  "my launches": { dot: "bg-cat-my-launches" },
-};
-
-function getCategoryDot(name: string) {
-  return (categoryMeta[name.toLowerCase()] || { dot: "bg-accent" }).dot;
 }
 
 export default async function PostPage({
@@ -87,9 +72,9 @@ export default async function PostPage({
                 className="flex items-center gap-2 hover:text-ink transition-colors"
               >
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${getCategoryDot(
-                    post.category
-                  )}`}
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    getCategoryMeta(post.category).dot
+                  }`}
                 />
                 {post.category}
               </a>
