@@ -45,18 +45,18 @@ export default async function Header({ activeHref = "/" }: HeaderProps) {
           <span className="font-mono font-normal text-base">.blog</span>
         </a>
 
-        <nav className="hidden md:flex items-center gap-7 font-mono text-[13px] text-faint">
-          {navItems.map((item, i) => (
+        <nav className="hidden md:flex items-center gap-5 font-mono text-[12px] text-faint overflow-x-auto whitespace-nowrap">
+          {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
               className={
                 item.href === activeHref
-                  ? "text-accent"
-                  : "hover:text-ink transition-colors"
+                  ? "text-accent shrink-0"
+                  : "hover:text-ink transition-colors shrink-0"
               }
             >
-              [{String(i).padStart(2, "0")}] {item.label}
+              {item.label}
             </a>
           ))}
         </nav>
