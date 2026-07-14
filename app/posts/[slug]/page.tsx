@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 export const revalidate = 60;
 
@@ -16,6 +18,22 @@ function readTime(html: string) {
   const text = html.replace(/<[^>]+>/g, " ");
   const words = text.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
+}
+
+// Same map as app/page.tsx. Duplicated for now rather than shared —
+// worth extracting to lib/categoryMeta.ts once category/[slug]/page.tsx
+// needs it too, so there's one place to update instead of three.
+const categoryMeta: Record<string, { dot: string }> = {
+  thoughts: { dot: "bg-cat-thoughts" },
+  money: { dot: "bg-cat-money" },
+  marketing: { dot: "bg-cat-marketing" },
+  building: { dot: "bg-cat-building" },
+  productivity: { dot: "bg-cat-productivity" },
+  "my launches": { dot: "bg-cat-my-launches" },
+};
+
+function getCategoryDot(name: string) {
+  return (categoryMeta[name.toLowerCase()] || { dot: "bg-accent" }).dot;
 }
 
 export default async function PostPage({
@@ -35,145 +53,128 @@ export default async function PostPage({
 
   if (!post) notFound();
 
-  const { data: categories } = await supabase
-    .from("categories")
-    .select("name")
-    .eq("site", "indiehacker.blog");
-
-  const allCategories = categories || [];
-
   return (
-    <div className="flex min-h-screen">
+    <>
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            .post-body p { margin: 0 0 1.25rem; line-height: 1.7; font-size: 17px; color: #1a1a1a; }
-            .post-body h2 { font-size: 22px; font-weight: 600; margin: 2rem 0 0.75rem; color: #1a1a1a; }
-            .post-body h3 { font-size: 18px; font-weight: 600; margin: 1.75rem 0 0.5rem; color: #1a1a1a; }
-            .post-body ul { list-style: disc; padding-left: 1.4rem; margin: 0 0 1.25rem; }
-            .post-body ol { list-style: decimal; padding-left: 1.4rem; margin: 0 0 1.25rem; }
-            .post-body li { margin-bottom: 0.4rem; line-height: 1.7; font-size: 17px; }
-            .post-body a { text-decoration: underline; }
-            .post-body blockquote { border-left: 3px solid rgba(0,0,0,0.15); padding-left: 1rem; margin: 0 0 1.25rem; color: #555; }
+            .post-body p { margin: 0 0 1.5rem; line-height: 1.75; font-size: 18px; color: #EDEDF0; }
+            .post-body h2 { font-family: var(--font-dm-sans); font-weight: 800; letter-spacing: -0.02em; font-size: 28px; margin: 2em 0 0.75em; line-height: 1.2; color: #EDEDF0; }
+            .post-body h3 { font-weight: 700; font-size: 20px; margin: 1.75rem 0 0.5rem; color: #EDEDF0; }
+            .post-body ul { list-style: disc; padding-left: 1.4rem; margin: 0 0 1.5rem; color: #EDEDF0; }
+            .post-body ol { list-style: decimal; padding-left: 1.4rem; margin: 0 0 1.5rem; color: #EDEDF0; }
+            .post-body li { margin-bottom: 0.4rem; line-height: 1.75; font-size: 18px; }
+            .post-body a { color: #EDEDF0; text-decoration: underline; text-decoration-color: #313138; text-underline-offset: 3px; }
+            .post-body a:hover { color: #6C93FF; text-decoration-color: #6C93FF; }
+            .post-body blockquote { font-weight: 700; letter-spacing: -0.01em; font-size: 26px; line-height: 1.35; color: #EDEDF0; border-left: 3px solid #6C93FF; padding-left: 1.25rem; margin: 2.5em 0; max-width: 32ch; }
             .post-body img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
           `,
         }}
       />
 
-      <aside className="w-[260px] shrink-0 bg-paper border-r border-ink/10 px-8 py-11">
-        <a href="/" className="inline-block">
-          <span className="text-lg font-medium relative">
-            indiehacker
-            <span className="absolute left-0 -bottom-1 h-[2px] w-full bg-ink" />
-          </span>
-        </a>
+      <Header
+        activeHref={
+          post.category ? `/category/${categorySlug(post.category)}` : "/"
+        }
+      />
 
-        <nav className="flex flex-col gap-3 mt-10 text-[15px]">
-          <a href="/" className="text-muted">
-            Latest
-          </a>
-          {allCategories.map((category) => (
-            <a
-              key={category.name}
-              href={`/category/${categorySlug(category.name)}`}
-              className={
-                post.category === category.name
-                  ? "text-ink font-medium"
-                  : "text-muted"
-              }
-            >
-              {category.name}
-            </a>
-          ))}
-          <a href="/projects" className="text-muted mt-[6px]">
-            Projects
-          </a>
-          <a href="/about" className="text-muted">
-            About
-          </a>
-        </nav>
+      <main className="max-w-[820px] mx-auto px-6 md:px-10 pt-8 pb-24">
+        <div className="flex items-center gap-2 text-[13px] font-mono text-faint mb-6">
+          {post.category && (
+            <>
+              <a
+                href={`/category/${categorySlug(post.category)}`}
+                className="flex items-center gap-2 hover:text-ink transition-colors"
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${getCategoryDot(
+                    post.category
+                  )}`}
+                />
+                {post.category}
+              </a>
+              <span>·</span>
+            </>
+          )}
+          <span>{formatDate(post.published_at)}</span>
+          <span>·</span>
+          <span>{readTime(post.content || "")} min read</span>
+        </div>
 
-        <p className="text-xs text-faint mt-10">p@ryoka.xyz</p>
-      </aside>
+        <h1
+          className="mb-10"
+          style={{
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            fontSize: "clamp(2.25rem, 5vw, 3.5rem)",
+            lineHeight: 1.05,
+          }}
+        >
+          {post.title}
+        </h1>
 
-      <main className="flex-1 flex justify-center px-10 py-11">
-        <div className="w-full max-w-2xl">
-          <div className="flex items-center gap-3 text-sm text-faint mb-6">
-            {post.category && (
-              <>
-                <a
-                  href={`/category/${categorySlug(post.category)}`}
-                  className="text-muted hover:opacity-70"
-                >
-                  {post.category}
-                </a>
-                <span>·</span>
-              </>
-            )}
-            <span>{formatDate(post.published_at)}</span>
-            <span>·</span>
-            <span>{readTime(post.content || "")} min read</span>
-          </div>
+        <article
+          className="post-body"
+          dangerouslySetInnerHTML={{ __html: post.content || "" }}
+        />
 
-          <h1 className="text-[40px] leading-[1.1] font-bold text-ink tracking-tight mb-10">
-            {post.title}
-          </h1>
-
-          <article
-            className="post-body"
-            dangerouslySetInnerHTML={{ __html: post.content || "" }}
+        <div className="mt-16 pt-8 border-t border-line flex gap-5">
+          <img
+            src="/Pieter-Borremans-founder.jpeg"
+            alt="Pieter Borremans"
+            className="w-14 h-14 shrink-0 rounded-full object-cover border border-line"
           />
-
-          <div className="mt-16 pt-8 border-t border-ink/10 flex gap-5">
-            <img
-              src="/Pieter-Borremans-founder.jpeg"
-              alt="Pieter Borremans"
-              className="w-14 h-14 shrink-0 rounded-full object-cover border border-ink/10"
-            />
-            <div>
-              <p className="text-base font-semibold text-ink mb-1">
-                Written by Pieter Borremans
-              </p>
-              <p className="text-[15px] text-muted leading-relaxed mb-3">
-Pieter Borremans is a writer, content creator, and founder based in Taichung, Taiwan and London, UK. He writes about entrepreneurship, independent business-building, and the unfiltered reality of creating things online, documenting the journey publicly on his personal blog, where he holds nothing back.              </p>
-              <div className="flex items-center gap-4 text-sm">
-                <a
-                  href="https://pieterborremans.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-ink"
-                >
-                  Personal Blog
-                </a>
-                <a
-                  href="https://www.pinterest.com/borremanspieter/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-ink"
-                >
-                  Pinterest
-                </a>
-                <a
-                  href="https://open.spotify.com/show/765k4LuyZrS2sYEkXHOZ47?si=008f51f82ca341d9"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-ink"
-                >
-                  Spotify
-                </a>
-                <a
-                  href="https://www.youtube.com/@PieterBorremans"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted hover:text-ink"
-                >
-                  YouTube
-                </a>
-              </div>
+          <div>
+            <p className="text-base font-semibold mb-1">
+              Written by Pieter Borremans
+            </p>
+            <p className="text-[15px] text-faint leading-relaxed mb-3">
+              Pieter Borremans is a writer, content creator, and founder
+              based in Taichung, Taiwan and London, UK. He writes about
+              entrepreneurship, independent business-building, and the
+              unfiltered reality of creating things online, documenting the
+              journey publicly on his personal blog, where he holds nothing
+              back.
+            </p>
+            <div className="flex items-center gap-4 text-sm">
+              <a
+                href="https://pieterborremans.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-faint hover:text-ink transition-colors"
+              >
+                Personal Blog
+              </a>
+              <a
+                href="https://www.pinterest.com/borremanspieter/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-faint hover:text-ink transition-colors"
+              >
+                Pinterest
+              </a>
+              <a
+                href="https://open.spotify.com/show/765k4LuyZrS2sYEkXHOZ47?si=008f51f82ca341d9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-faint hover:text-ink transition-colors"
+              >
+                Spotify
+              </a>
+              <a
+                href="https://www.youtube.com/@PieterBorremans"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-faint hover:text-ink transition-colors"
+              >
+                YouTube
+              </a>
             </div>
           </div>
         </div>
       </main>
-    </div>
+
+      <Footer />
+    </>
   );
 }
