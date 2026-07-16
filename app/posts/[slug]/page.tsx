@@ -49,8 +49,8 @@ export default async function PostPage({
             .post-body ul { list-style: disc; padding-left: 1.4rem; margin: 0 0 1.5rem; color: #EDEDF0; }
             .post-body ol { list-style: decimal; padding-left: 1.4rem; margin: 0 0 1.5rem; color: #EDEDF0; }
             .post-body li { margin-bottom: 0.4rem; line-height: 1.75; font-size: 18px; }
-            .post-body a { color: #EDEDF0; text-decoration: underline; text-decoration-color: #313138; text-underline-offset: 3px; }
-            .post-body a:hover { color: #6C93FF; text-decoration-color: #6C93FF; }
+            .post-body a { color: #6C93FF; text-decoration: underline; text-decoration-color: #6C93FF; text-underline-offset: 5px; }
+            .post-body a:hover { color: #93AFFF; text-decoration-color: #93AFFF; }
             .post-body blockquote { font-weight: 700; letter-spacing: -0.01em; font-size: 26px; line-height: 1.35; color: #EDEDF0; border-left: 3px solid #6C93FF; padding-left: 1.25rem; margin: 2.5em 0; max-width: 32ch; }
             .post-body img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; }
           `,
@@ -63,7 +63,7 @@ export default async function PostPage({
         }
       />
 
-      <main className="max-w-[820px] mx-auto px-6 md:px-10 pt-8 pb-24">
+      <main className="max-w-[720px] mx-auto px-6 md:px-10 pt-8 pb-24">
         <div className="flex items-center gap-2 text-[13px] font-mono text-faint mb-6">
           {post.category && (
             <>
