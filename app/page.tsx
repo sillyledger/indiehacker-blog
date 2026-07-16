@@ -14,11 +14,18 @@ function formatDate(iso: string) {
   return `${month}-${day}-${year}`;
 }
 
+function excerpt(html: string, maxLen = 120) {
+  const text = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  if (text.length <= maxLen) return text;
+  return text.slice(0, maxLen).replace(/\s+\S*$/, "") + "…";
+}
+
 type PostRow = {
   title: string;
   slug: string;
   category: string | null;
   published_at: string;
+  content: string | null;
 };
 
 function groupByYear(posts: PostRow[]) {
@@ -40,7 +47,7 @@ export default async function Home() {
 
   const { data: posts } = await supabase
     .from("posts")
-    .select("title, slug, category, published_at")
+    .select("title, slug, category, published_at, content")
     .eq("target_site", "indiehacker.blog")
     .eq("status", "published")
     .order("published_at", { ascending: false });
@@ -77,9 +84,18 @@ export default async function Home() {
     .slice(0, 6);
   const yearGroups = groupByYear(allPosts);
 
-  // Raw hex values for the SVG wiring (gradients/pins need actual hex,
-  // not Tailwind class names). Mirrors the cat.* colors in tailwind.config.js.
-  const CARD_HEX = ["#7DD48B", "#E8AC3D", "#F2789F", "#4FD1C5", "#B79CF2", "#6C93FF"];
+  // Raw hex values for SVG/inline-style color (gradients/pins need actual
+  // hex, not Tailwind class names). Mirrors the cat.* colors in
+  // tailwind.config.js. Keyed by name (not position) so the timeline can
+  // also look up a color for any post's category, not just the 6 cards.
+  const CATEGORY_HEX: Record<string, string> = {
+    thoughts: "#7DD48B",
+    money: "#E8AC3D",
+    marketing: "#F2789F",
+    building: "#4FD1C5",
+    productivity: "#B79CF2",
+    "my launches": "#6C93FF",
+  };
   // left/top/rotate for each of the 6 slots in the fixed 880px-wide map,
   // row-major: row 1 is indices 0-2, row 2 is indices 3-5.
   const CARD_POS = [
@@ -299,7 +315,7 @@ export default async function Home() {
                   <div className="flex items-center gap-2 mb-2.5">
                     <span
                       className="w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ background: CARD_HEX[i] }}
+                      style={{ background: CATEGORY_HEX[category.name.toLowerCase()] || "#6C93FF" }}
                     />
                     <span
                       className={`font-mono text-[12px] tracking-wide ${
@@ -354,37 +370,71 @@ export default async function Home() {
         </section>
       )}
 
-      {/* ============ LATEST POSTS (plain list, no cards) ============ */}
-      <main className="max-w-[1180px] mx-auto px-6 md:px-10 pb-24">
+      {/* ============ LATEST POSTS (timeline) ============ */}
+      <main className="max-w-[1040px] mx-auto px-6 md:px-10 pb-24">
         <p className="font-mono text-[13px] text-faint mb-10">LATEST POSTS</p>
 
         {allPosts.length === 0 && (
           <p className="text-faint text-center mb-10">No posts yet.</p>
         )}
 
-        {yearGroups.map(({ year, posts: yearPosts }) => (
-          <section key={year} className="mb-2">
-            <p className="text-base font-semibold mb-2">{year}</p>
-            <div className="border-t border-line" />
-            {yearPosts.map((post) => (
-              <a
-                key={post.slug}
-                href={`/posts/${post.slug}`}
-                className="block py-8 group border-b border-line"
-              >
-                <span className="font-mono text-[13px] text-faint">
-                  {formatDate(post.published_at)}
-                </span>
-                <h3
-                  className="mt-2 group-hover:text-accent transition-colors"
-                  style={{ fontWeight: 700, fontSize: "22px", lineHeight: 1.25 }}
-                >
-                  {post.title}
-                </h3>
-              </a>
-            ))}
-          </section>
-        ))}
+        <div className="relative">
+          {allPosts.length > 0 && (
+            <div
+              className="absolute top-2 bottom-2 left-6"
+              style={{ borderLeft: "1.3px dashed #3A3A42" }}
+            />
+          )}
+
+          {yearGroups.map(({ year, posts: yearPosts }) => (
+            <div key={year}>
+              <div className="relative pl-[60px] mb-7">
+                <span className="absolute left-4 top-0.5 w-4 h-4 rounded-full bg-canvas border-[1.5px] border-accent" />
+                <span className="text-xl font-extrabold tracking-tight">{year}</span>
+              </div>
+
+              {yearPosts.map((post) => {
+                const hex = post.category
+                  ? CATEGORY_HEX[post.category.toLowerCase()] || "#6C93FF"
+                  : "#6C93FF";
+                return (
+                  <a
+                    key={post.slug}
+                    href={`/posts/${post.slug}`}
+                    className="group relative block pl-[60px] mb-11"
+                  >
+                    <span
+                      className="absolute left-[19px] top-[7px] w-2.5 h-2.5 rounded-[2px]"
+                      style={{ background: hex, transform: "rotate(45deg)" }}
+                    />
+                    <span
+                      className="absolute left-[29px] top-[11px] w-[31px]"
+                      style={{ borderTop: "1.2px dashed #3A3A42" }}
+                    />
+                    <div
+                      className="flex items-center gap-2 font-mono text-[12px] mb-1.5"
+                      style={{ color: hex }}
+                    >
+                      {post.category && <span>{post.category.toUpperCase()}</span>}
+                      <span className="text-faint">· {formatDate(post.published_at)}</span>
+                    </div>
+                    <h3
+                      className="mb-1.5 group-hover:text-accent transition-colors"
+                      style={{ fontWeight: 700, fontSize: "20px", lineHeight: 1.3 }}
+                    >
+                      {post.title}
+                    </h3>
+                    {post.content && (
+                      <p className="text-[14px] leading-relaxed text-muted max-w-[560px]">
+                        {excerpt(post.content)}
+                      </p>
+                    )}
+                  </a>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </main>
 
       <Footer />
