@@ -15,8 +15,8 @@ export default async function Footer() {
   const allCategories = categories || [];
 
   return (
-    <footer className="border-t border-dashed border-line">
-      <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-14">
+    <footer>
+      <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-14 border-t border-dashed border-line">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
           <div>
             <p className="font-mono text-[12px] tracking-wider text-faint mb-4">
