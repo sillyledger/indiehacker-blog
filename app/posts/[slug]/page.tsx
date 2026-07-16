@@ -49,6 +49,7 @@ export default async function PostPage({
             .post-body ul { list-style: disc; padding-left: 1.4rem; margin: 0 0 1.5rem; color: #EDEDF0; }
             .post-body ol { list-style: decimal; padding-left: 1.4rem; margin: 0 0 1.5rem; color: #EDEDF0; }
             .post-body li { margin-bottom: 0.4rem; line-height: 1.75; font-size: 18px; }
+            .post-body li p { margin: 0; }
             .post-body a { color: #6C93FF; text-decoration: underline; text-decoration-color: #6C93FF; text-underline-offset: 5px; }
             .post-body a:hover { color: #93AFFF; text-decoration-color: #93AFFF; }
             .post-body blockquote { font-weight: 700; letter-spacing: -0.01em; font-size: 26px; line-height: 1.35; color: #EDEDF0; border-left: 3px solid #6C93FF; padding-left: 1.25rem; margin: 2.5em 0; max-width: 32ch; }
