@@ -66,7 +66,7 @@ export default async function ProjectsPage() {
             href="https://www.ryokagroup.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-accent transition-colors"
+            className="underline decoration-dotted hover:text-accent transition-colors"
           >
             Ryoka Group
           </a>
@@ -106,7 +106,7 @@ export default async function ProjectsPage() {
             href="https://www.ryokagroup.com/brands"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-mono text-faint underline underline-offset-[3px] hover:text-ink transition-colors"
+            className="text-sm font-mono text-faint underline decoration-dotted underline-offset-[3px] hover:text-ink transition-colors"
           >
             See all Ryoka Group brands &rarr;
           </a>

@@ -124,7 +124,7 @@ export default async function AboutPage() {
               href="https://ryokagroup.com/founder"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:text-accent transition-colors"
+              className="underline decoration-dotted hover:text-accent transition-colors"
             >
               Ryoka Group
             </a>

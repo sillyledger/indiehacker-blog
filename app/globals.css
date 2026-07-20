@@ -8,5 +8,6 @@ body {
 }
 
 a {
+  text-decoration-style: dotted;
   text-underline-offset: 4px;
 }

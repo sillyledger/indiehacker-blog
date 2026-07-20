@@ -78,7 +78,7 @@ export default function AffiliateDisclosurePage() {
             Questions about a specific link or partnership? Email me at{" "}
             <a
               href="mailto:p@ryoka.xyz"
-              className="underline hover:text-accent transition-colors"
+              className="underline decoration-dotted hover:text-accent transition-colors"
             >
               p@ryoka.xyz
             </a>

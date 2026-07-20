@@ -88,7 +88,7 @@ export default function PrivacyPage() {
             Questions about any of this? Email me at{" "}
             <a
               href="mailto:p@ryoka.xyz"
-              className="underline hover:text-accent transition-colors"
+              className="underline decoration-dotted hover:text-accent transition-colors"
             >
               p@ryoka.xyz
             </a>

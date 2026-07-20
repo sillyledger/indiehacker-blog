@@ -23,7 +23,7 @@ export default async function Header({ activeHref = "/" }: HeaderProps) {
   const allCategories = categories || [];
 
   const navItems = [
-    { label: "latest", href: "/" },
+    { label: "home", href: "/" },
     ...allCategories.map((c) => ({
       label: c.name.toLowerCase(),
       href: `/category/${categorySlug(c.name)}`,
