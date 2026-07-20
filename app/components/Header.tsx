@@ -7,7 +7,7 @@ function categorySlug(category: string) {
 type HeaderProps = {
   /**
    * The current page's href, used to highlight the active nav item.
-   * e.g. "/", "/category/money", "/projects", "/about"
+   * e.g. "/", "/posts", "/category/money"
    */
   activeHref?: string;
 };
@@ -24,12 +24,11 @@ export default async function Header({ activeHref = "/" }: HeaderProps) {
 
   const navItems = [
     { label: "home", href: "/" },
+    { label: "all posts", href: "/posts" },
     ...allCategories.map((c) => ({
       label: c.name.toLowerCase(),
       href: `/category/${categorySlug(c.name)}`,
     })),
-    { label: "projects", href: "/projects" },
-    { label: "about", href: "/about" },
   ];
 
   return (

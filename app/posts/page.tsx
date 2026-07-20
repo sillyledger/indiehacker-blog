@@ -1,21 +1,11 @@
-import { notFound } from "next/navigation";
-import { createClient } from "../../../lib/supabase";
-import { getCategoryMeta } from "../../../lib/categoryMeta";
-import { CATEGORY_HEX, excerpt, formatDate, groupByYear } from "../../../lib/postDisplay";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import { createClient } from "../../lib/supabase";
+import { CATEGORY_HEX, excerpt, formatDate, groupByYear } from "../../lib/postDisplay";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export const revalidate = 60;
 
-function categorySlug(category: string) {
-  return category.toLowerCase().replace(/\s+/g, "-");
-}
-
-export default async function CategoryPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function AllPostsPage() {
   const supabase = createClient();
 
   const { data: allRows } = await supabase
@@ -25,64 +15,50 @@ export default async function CategoryPage({
     .eq("status", "published")
     .order("published_at", { ascending: false });
 
-  const rows = allRows || [];
-
-  const categoryNames = Array.from(
-    new Set(
-      rows
-        .map((r) => r.category)
-        .filter((c): c is string => !!c && c.trim().length > 0)
-    )
-  ).sort((a, b) => a.localeCompare(b));
-
-  const match = categoryNames.find((name) => categorySlug(name) === params.slug);
-
-  if (!match) notFound();
-
-  const categoryPosts = rows.filter((r) => r.category === match);
-  const yearGroups = groupByYear(categoryPosts);
+  const posts = allRows || [];
+  const yearGroups = groupByYear(posts);
 
   return (
     <>
-      <Header activeHref={`/category/${params.slug}`} />
+      <Header activeHref="/posts" />
 
       <main className="max-w-[1040px] mx-auto px-6 md:px-10 pt-14 pb-24">
-        <div className="flex items-center justify-center gap-3 mb-12">
-          <span
-            className={`w-2.5 h-2.5 rounded-full ${getCategoryMeta(match).dot}`}
-          />
+        <div className="text-center mb-12">
+          <p className="font-mono text-[13px] text-faint mb-3">// all posts</p>
           <h1
-            className="text-center"
             style={{ fontWeight: 800, letterSpacing: "-0.02em", fontSize: "28px" }}
           >
-            {match}
+            Everything I&rsquo;ve written
           </h1>
+          <p className="text-faint text-[14px] mt-3">
+            {posts.length} posts, newest first
+          </p>
         </div>
 
-        {categoryPosts.length === 0 && (
-          <p className="text-faint text-center mb-10">
-            No posts in this category yet.
-          </p>
+        {posts.length === 0 && (
+          <p className="text-faint text-center mb-10">No posts yet.</p>
         )}
 
         <div className="relative">
-          {categoryPosts.length > 0 && (
+          {posts.length > 0 && (
             <div
               className="absolute top-2 bottom-2 left-6"
               style={{ borderLeft: "1.3px dashed #3A3A42" }}
             />
           )}
 
-          {yearGroups.map(({ year, posts: yearPosts }) => {
-            const hex = CATEGORY_HEX[match.toLowerCase()] || "#6C93FF";
-            return (
-              <div key={year}>
-                <div className="relative pl-[60px] mb-7">
-                  <span className="absolute left-4 top-0.5 w-4 h-4 rounded-full bg-canvas border-[1.5px] border-accent" />
-                  <span className="text-xl font-extrabold tracking-tight">{year}</span>
-                </div>
+          {yearGroups.map(({ year, posts: yearPosts }) => (
+            <div key={year}>
+              <div className="relative pl-[60px] mb-7">
+                <span className="absolute left-4 top-0.5 w-4 h-4 rounded-full bg-canvas border-[1.5px] border-accent" />
+                <span className="text-xl font-extrabold tracking-tight">{year}</span>
+              </div>
 
-                {yearPosts.map((post) => (
+              {yearPosts.map((post) => {
+                const hex = post.category
+                  ? CATEGORY_HEX[post.category.toLowerCase()] || "#6C93FF"
+                  : "#6C93FF";
+                return (
                   <a
                     key={post.slug}
                     href={`/posts/${post.slug}`}
@@ -100,7 +76,7 @@ export default async function CategoryPage({
                       className="flex items-center gap-2 font-mono text-[12px] mb-1.5"
                       style={{ color: hex }}
                     >
-                      <span>{match.toUpperCase()}</span>
+                      <span>{(post.category || "").toUpperCase()}</span>
                       <span className="text-faint">· {formatDate(post.published_at)}</span>
                     </div>
                     <h3
@@ -115,10 +91,10 @@ export default async function CategoryPage({
                       </p>
                     )}
                   </a>
-                ))}
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          ))}
         </div>
       </main>
 
