@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import { createClient } from "../../lib/supabase";
 import { CATEGORY_HEX, excerpt, formatDate, groupByYear } from "../../lib/postDisplay";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "All Posts",
+  description: "Every post from indiehacker.blog, newest first — building alone, honestly.",
+};
 
 export default async function AllPostsPage() {
   const supabase = createClient();

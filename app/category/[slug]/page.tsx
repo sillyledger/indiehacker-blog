@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase";
 import { getCategoryMeta } from "../../../lib/categoryMeta";
@@ -9,6 +10,43 @@ export const revalidate = 60;
 
 function categorySlug(category: string) {
   return category.toLowerCase().replace(/\s+/g, "-");
+}
+
+async function findCategoryName(slug: string) {
+  const supabase = createClient();
+
+  const { data: allRows } = await supabase
+    .from("posts")
+    .select("category")
+    .eq("target_site", "indiehacker.blog")
+    .eq("status", "published");
+
+  const categoryNames = Array.from(
+    new Set(
+      (allRows || [])
+        .map((r) => r.category)
+        .filter((c): c is string => !!c && c.trim().length > 0)
+    )
+  );
+
+  return categoryNames.find((name) => categorySlug(name) === slug);
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const match = await findCategoryName(params.slug);
+
+  if (!match) {
+    return { title: "Category not found" };
+  }
+
+  return {
+    title: match,
+    description: `Posts about ${match} from indiehacker.blog — building alone, honestly.`,
+  };
 }
 
 export default async function CategoryPage({

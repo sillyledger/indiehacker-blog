@@ -1,10 +1,54 @@
+import { cache } from "react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createClient } from "../../../lib/supabase";
 import { getCategoryMeta } from "../../../lib/categoryMeta";
+import { excerpt } from "../../../lib/postDisplay";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 export const revalidate = 60;
+
+const getPost = cache(async (slug: string) => {
+  const supabase = createClient();
+  const { data: post } = await supabase
+    .from("posts")
+    .select("title, slug, content, category, published_at")
+    .eq("target_site", "indiehacker.blog")
+    .eq("status", "published")
+    .eq("slug", slug)
+    .single();
+  return post;
+});
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const post = await getPost(params.slug);
+
+  if (!post) {
+    return { title: "Post not found" };
+  }
+
+  const description = excerpt(post.content || "", 158);
+
+  return {
+    title: post.title,
+    description,
+    openGraph: {
+      title: post.title,
+      description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description,
+    },
+  };
+}
 
 function categorySlug(category: string) {
   return category.toLowerCase().replace(/\s+/g, "-");
@@ -26,15 +70,7 @@ export default async function PostPage({
 }: {
   params: { slug: string };
 }) {
-  const supabase = createClient();
-
-  const { data: post } = await supabase
-    .from("posts")
-    .select("title, slug, content, category, published_at")
-    .eq("target_site", "indiehacker.blog")
-    .eq("status", "published")
-    .eq("slug", params.slug)
-    .single();
+  const post = await getPost(params.slug);
 
   if (!post) notFound();
 

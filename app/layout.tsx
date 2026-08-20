@@ -17,7 +17,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "indiehacker.blog",
+  title: {
+    default: "indiehacker.blog",
+    template: "%s | indiehacker.blog",
+  },
   description: "No growth hacks. Just what building alone actually looks like.",
   icons: {
     icon: [
